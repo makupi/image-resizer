@@ -1,0 +1,12 @@
+{
+    "twitchEmotes": {
+        "sizes": [112, 56, 28],
+        "inputFolder": "in_emotes", 
+        "outputFolder": "out_emotes"
+    },
+    "subBadges": {
+        "sizes": [72, 36, 18],
+        "inputFolder": "in_badges",
+        "outputFolder": "out_badges"
+    }    
+}

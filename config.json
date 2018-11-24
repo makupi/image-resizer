@@ -1,4 +1,13 @@
-{
+{  
+    "config": {
+        "filter": "lanczos",
+        "experimental": {
+            "sharper": false,
+            "smoother": false,
+            "edgeEnhance": false,
+            "detail": false
+        }
+    },
     "twitchEmotes": {
         "sizes": [112, 56, 28],
         "inputFolder": "in_emotes", 

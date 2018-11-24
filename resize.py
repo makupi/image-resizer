@@ -1,8 +1,18 @@
 from PIL import Image
+from PIL import ImageFilter
 import glob, os, json
 
 
 default_config = {
+        "config": {
+            "filter": 0,
+            "experimental": {
+                "sharper": False,
+                "smoother": False,
+                "edgeEnhance": False,
+                "detail": False
+            }
+        },
         "twitchEmotes": {
             "sizes": [112, 56, 28],
             "inputFolder": "in_emotes", 
@@ -26,7 +36,32 @@ print("## Running resize tool by maku :3")
 print("## For issues/feedback contact me via discord maku#0001")
 print(linebreaker)
 
+cfg = config.get('config')
+filt = cfg.get('filter', None)
+if not filt:
+    filt = Image.ANTIALIAS
+else:
+    filt = filt.lower()
+    if filt == 'bicubic':
+        filt = Image.BICUBIC
+    elif filt == 'bilinear':
+        filt = Image.BILINEAR
+    elif filt == 'lanczos':
+        filt = Image.ANTIALIAS
+exp = cfg.get('experimental', None)
+sharper = False
+smoother = False
+edge = False
+detail = False
+if exp:
+    sharper = exp.get('sharper', False)
+    smoother = exp.get('smoother', False)
+    edge = exp.get('edgeEnhance', False)
+    detail = exp.get('detail', False)
+
 for key, value in config.items():
+    if key == "config":
+        continue
     sizes = value['sizes']
     in_folder = value.get('inputFolder', 'input')
     out_folder = value.get('outputFolder', 'output')
@@ -42,7 +77,21 @@ for key, value in config.items():
         print("Resizing " + file + ".. ", end='')
         im = Image.open(infile)
         for size in sizes:
-            res = im.resize((size, size), Image.ANTIALIAS)
+            res = im.resize((size, size), filt)
+
+            if sharper:
+                res = res.filter(ImageFilter.SHARPEN)
+                print("using sharper.. ")
+            if smoother:
+                res = res.filter(ImageFilter.SMOOTH)
+                print("using smoother.. ")
+            if edge:
+                res = res.filter(ImageFilter.EDGE_ENHANCE)
+                print("using edge enhance.. ")
+            if detail:
+                res = res.filter(ImageFilter.DETAIL)
+                print("using detail.. ")
+
             filename = out_folder + "/" + file + "_" + str(size) + ".png"
             res.save(filename, "PNG", quality=95)
         print("done.")

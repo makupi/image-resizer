@@ -8,6 +8,15 @@ The folders and sizes can be configured in the `config.json` file.
 Structure of the file:
 ```json
 {
+    "config": {
+        "filter": "lanczos",
+        "experimental": {
+            "sharper": false,
+            "smoother": false,
+            "edgeEnhance": false,
+            "detail": false
+        }
+    },
     "twitchEmotes": {
         "sizes": [112, 56, 28],
         "inputFolder": "in_emotes", 
@@ -21,7 +30,14 @@ Structure of the file:
 }
 ```
 `twitchEmotes` and `subBadges` are the default configurations.    
-Each key has an object with the `sizes` as an array of intergers and two strings with `inputFolder` and `outputFolder`.
+Each key has an object with the `sizes` as an array of intergers and two strings with `inputFolder` and `outputFolder`.    
+The `config` part is mostly for the `filter` method for downsampling. Supported here are the following
+- `lanczos` 
+- `bicubic`
+- `bilinear`    
+
+Usually you'd want to use either `lanczos` or `bicubic`.   
+In addition to that there are 4 new `experimental` options. These apply filters __after__ downsampling. The two that might improve the image are `sharper` and `detail`, please try these before actually using. Simply set them to `true` to activate and `false` to deactivate. 
 
 ## Usage
 
